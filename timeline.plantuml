@@ -1,0 +1,59 @@
+@startuml timeline
+
+skinparam packageStyle rectangle
+
+' === MODELO ===
+package "Modelo" {
+    class Timeline{
+        - years: Year[]
+        + addYear()
+        + getYears()
+    }
+
+    class Year{
+        - value: string
+        - events: Event[]
+        + addEvent()
+    }
+
+    class Event{
+        - title: string
+        - date: string
+        - city: string
+        - country: string
+        - participants: Participant[]
+        + addParticipant()
+        + getParticipant()
+    }
+
+    class Participant{
+        - name: string
+        - role: string
+        - img: string
+        - events: Event[]
+        - awards: Awards[]
+        + addEvent()
+        + addAward()
+    }
+
+    class Award {
+        - name: string
+        - description: string
+        + getData()
+    }
+}
+
+' === CONTROLADORES ===
+package "Controladores" {
+    class App {
+        + init(): Timeline
+    }
+}
+
+Timeline *-- Year           : composition
+Year *-- Event              : composition
+Event *-- Participant       : composition
+Participant *-- Award       : composition
+Participant o-- Event       : aggregation
+
+@enduml
