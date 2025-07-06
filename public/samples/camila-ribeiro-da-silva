@@ -1,13 +1,14 @@
 ---
-author: ""
-categories: ["Embajadora", "Camila Ribeiro da Silva"] 
+name: "camila-ribeiro-da-silva"
+role: ["Palestrante"] 
 date: "2025-06-15T15:00:00Z"
+image: "images/camila-ribeiro-da-silva.jpg" 
 description: "Reconhecimento a Camila Ribeiro da Silva, socióloga e defensora dos direitos humanos, por sua trajetória na promoção da justiça social, educação comunitária e igualdade de gênero."
-cover_image: "images/embajadores/camila-ribeiro-da-silva.jpg" 
 slug: "camila-ribeiro-da-silva"
 summary: "Educadora, ativista e líder brasileira, reconhecida por seu trabalho em comunidades marginalizadas e sua atuação incansável em prol da paz e da equidade."
-tags: ["Embajadora", "Camila Ribeiro da Silva"]
-awards: ["Embajadora de Paz"]
+tags: ["Camila Ribeiro da Silva"]
+events: ["Prêmio Inovação 2008"]
+awards: ["Medalha de Ouro"]
 title: "Camila Ribeiro da Silva: Voz e Coragem pela Justiça Social"
 draft: false
 ---
@@ -42,9 +43,9 @@ Sua experiência inclui trabalho direto em contextos de alta vulnerabilidade:
 
 Seu trabalho foi reconhecido por entidades como a Anistia Internacional e a ONU Mulheres, sendo convidada a palestrar em fóruns internacionais sobre equidade de gênero e segurança cidadã.
 
-## Nomeação como Embajadora de Paz
+## Nomeação como Embaixadora de Paz
 
-Em 2025, Camila foi homenageada como **Embajadora de Paz**, símbolo de sua trajetória exemplar e da esperança de transformação por meio da empatia, da educação e do compromisso coletivo.
+Em 2025, Camila foi homenageada como **Embaixadora de Paz**, símbolo de sua trajetória exemplar e da esperança de transformação por meio da empatia, da educação e do compromisso coletivo.
 
 > **Frase representativa:**  
 > *“A escuta é o primeiro passo da transformação.”*
@@ -55,7 +56,7 @@ Em 2025, Camila foi homenageada como **Embajadora de Paz**, símbolo de sua traj
 
 <div style="margin-top: 2rem; text-align:center;">
   <iframe 
-    src="/actas/camila-ribeiro-da-silva-acta-embajadora.pdf"  
+    src="/actas/camila-ribeiro-da-silva-acta.pdf"  
     width="100%" 
     height="600px" 
     style="border: none; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">

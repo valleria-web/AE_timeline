@@ -3,8 +3,9 @@
 │   │    └── /img  
 │   │    └── /samples 
 │   │        ├── Especificacao
-│   │        ├── SampleMD            
-│   ├── stile.css  
+│   │        └── SampleMD      
+│   ├── main.js        
+│   ├── style.css  
 │   └── index.html      
 ├── /src
 │   ├── /models             
@@ -14,10 +15,24 @@
 │   │   ├── Award.js
 │   │   └── Participant.js 
 │   ├── /controllers
+│   │    └── App.js
 │   ├── /views 
+│   │    └── TimelineView.js
+│   ├── /dataParser 
+│   │    ├── EventParser.js
+│   │    └── YearParser.js
 │   ├── /data   
 │   │   └── /timeline
-│   │        └── /2008
-│   │             ├── 2008-event-data.md 
-│   │             └── /participants2008
-│   │                  ├──  anna-maria.md
+│   │        ├─ /awards
+│   │        │    ├─ medalha-de-oro.md 
+│   │        │    └─ medalha-de-prata.md 
+│   │        ├─ /events
+│   │        │   ├─ premio-inovacao-2008.md
+│   │        │   └─ seminario-internacional-2008.md
+│   │        ├─ /participants
+│   │        │   ├─ camila-ribeiro-da-silva.md
+│   │        │   └─ bob-smith.md
+│   │        └─ /years
+│   │            ├─ 2009.md
+│   │            └─ 2008.md
+

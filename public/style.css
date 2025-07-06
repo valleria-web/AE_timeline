@@ -1,0 +1,74 @@
+body {
+  background: #f7f8fa;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #23272f;
+  margin: 0;
+  padding: 40px;
+}
+
+.year-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px 0 rgba(80, 110, 255, 0.09);
+  padding: 32px 24px;
+  margin-bottom: 36px;
+  transition: box-shadow 0.2s;
+}
+
+.year-card h2 {
+  margin-top: 0;
+  color: #506eff;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.event-card {
+  background: #f2f6fc;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0 rgba(80, 110, 255, 0.07);
+  padding: 20px 18px;
+  margin-bottom: 18px;
+  margin-left: 16px;
+  border-left: 4px solid #506eff;
+  transition: box-shadow 0.2s;
+}
+
+.event-card h3 {
+  margin: 0 0 8px 0;
+  color: #1a237e;
+  font-size: 1.2rem;
+}
+
+.participant-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px 0 rgba(80, 110, 255, 0.03);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  margin-left: 18px;
+  border-left: 3px solid #72c6ff;
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.award-card {
+  background: #e3f2fd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 8px 0 0 20px;
+  font-size: 0.95rem;
+  color: #0054b1;
+  border-left: 3px solid #ffd700;
+  box-shadow: 0 1px 3px 0 rgba(80, 110, 255, 0.02);
+}
+
+@media (max-width: 600px) {
+  .year-card {
+    padding: 18px 8px;
+  }
+  .event-card {
+    padding: 12px 8px;
+  }
+}

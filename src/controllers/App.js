@@ -1,9 +1,11 @@
 import Timeline from "../models/Timeline.js";
-import Year from "../models/Year.js";
-import Event from "../models/Event.js";
-import Participant from "../models/Participant.js";
-import Award from "../models/Award.js";
-import TimelineView from "../views/TimelineView.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+import YearParser from "../dataParser/YearParser.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class App {
   constructor() {
@@ -11,31 +13,19 @@ class App {
   }
 
   init() {
-    const timeline = new Timeline();
-    const y_2008 = new Year(2008);
-    const event_1 = new Event(
-      "Graduacao 2008",
-      "10/10/2008",
-      "Dourados",
-      "Brasil"
-    );
+    const yearsDir = path.join(__dirname, "../data/timeline/years");
 
-    const award_1 = new Award("Medalha de Ouro", "Premio a melhor palestra");
+    const yearFiles = fs
+      .readdirSync(yearsDir)
+      .filter((file) => file.endsWith(".md"));
 
-    const anna = new Participant("Anna Maria");
-    anna.addEvent(event_1);
-    anna.addAward(award_1);
+    yearFiles.forEach((yearFile) => {
+      const filePath = path.join(yearsDir, yearFile);
+      const year = YearParser.loadFromMd(filePath);
+      if (year) this.timeline.addYear(year);
+    });
 
-    y_2008.addEvent(event_1);
-    event_1.addParticipant(anna);
-
-    timeline.addYear(y_2008);
-
-    //console.log(timeline.getYears());
-    //console.log(y_2008.getEvents());
-    //console.log(event_1.getParticipant());
-    console.log(anna.getData());
-
+    return this.timeline;
   }
 }
 
@@ -43,3 +33,4 @@ export default App;
 
 const app = new App();
 const timeline = app.init();
+console.log(timeline.getYears());

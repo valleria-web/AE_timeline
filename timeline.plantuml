@@ -8,12 +8,16 @@ package "Modelo" {
         - years: Year[]
         + addYear()
         + getYears()
+        + getData()
     }
 
     class Year{
         - value: string
+        - description: string
         - events: Event[]
         + addEvent()
+        + getEvents()
+        + getData()
     }
 
     class Event{
@@ -24,6 +28,7 @@ package "Modelo" {
         - participants: Participant[]
         + addParticipant()
         + getParticipant()
+        + getData()
     }
 
     class Participant{
@@ -31,15 +36,36 @@ package "Modelo" {
         - role: string
         - img: string
         - events: Event[]
-        - awards: Awards[]
+        - awards: Award[]
         + addEvent()
         + addAward()
+        + getData()
     }
 
     class Award {
         - name: string
         - description: string
         + getData()
+    }
+}
+
+' === DATA ===
+package "Data" {
+    package "timeline" {
+        package "awards" {}
+        package "events" {}
+        package "participants" {}
+        package "years" {}
+    }
+}
+
+' === DATA Parser ===
+package "dataParser" {
+    class YearParser {
+        + static loadFromMd(filePath): Year
+    }
+    class EventParser {
+        + static loadBySlug(slug): Event
     }
 }
 
@@ -50,10 +76,41 @@ package "Controladores" {
     }
 }
 
+' === VISTAS ===
+package "Views" {
+    class TimelineView {
+        + render(): Timeline
+    }
+}
+
+' === PUBLICO (Front-end) ===
+package "Public" {
+    class index_html << (F,#FFDBAA) >>
+    class style_css << (F,#E2EEFF) >>
+    class main_js << (F,#E2FFDB) >>
+}
+
+' === RELACIONES ENTRE CAPAS ===
+
 Timeline *-- Year           : composition
 Year *-- Event              : composition
 Event *-- Participant       : composition
 Participant *-- Award       : composition
 Participant o-- Event       : aggregation
+
+YearParser ..> Year         : crea instancia
+EventParser ..> Event       : crea instancia
+
+App --> Timeline            : crea/administra
+App ..> YearParser          : usa para instanciar años
+
+index_html --> style_css    : "vincula"
+index_html --> main_js      : "carga script"
+main_js --> App             : "inicia/interactúa"
+App --> TimelineView        : "renderiza vista"
+
+' Relación data <-> Parser
+YearParser ..> Data : "lee .md"
+EventParser ..> Data : "lee .md"
 
 @enduml
