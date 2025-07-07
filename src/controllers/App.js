@@ -5,7 +5,10 @@ import fs from "fs";
 import YearParser from "../dataParser/YearParser.js";
 
 const __filename = fileURLToPath(import.meta.url);
+console.log("__filename:", __filename);
+
 const __dirname = path.dirname(__filename);
+console.log("__dirname:", __dirname);
 
 class App {
   constructor() {
@@ -13,7 +16,7 @@ class App {
   }
 
   init() {
-    const yearsDir = path.join(__dirname, "../data/timeline/years");
+    const yearsDir = path.join(__dirname, "../dataTimelineMD/years");
 
     const yearFiles = fs
       .readdirSync(yearsDir)
@@ -21,7 +24,7 @@ class App {
 
     yearFiles.forEach((yearFile) => {
       const filePath = path.join(yearsDir, yearFile);
-      const year = YearParser.loadFromMd(filePath);
+      const year = YearParser.parseFromMd(filePath);
       if (year) this.timeline.addYear(year);
     });
 

@@ -50,13 +50,12 @@ package "Modelo" {
 }
 
 ' === DATA ===
-package "Data" {
-    package "timeline" {
-        package "awards" {}
-        package "events" {}
-        package "participants" {}
-        package "years" {}
-    }
+
+package "dataTimelineMD" {
+    package "awards" {}
+    package "events" {}
+    package "participants" {}
+    package "years" {}
 }
 
 ' === DATA Parser ===
@@ -110,7 +109,7 @@ main_js --> App             : "inicia/interactúa"
 App --> TimelineView        : "renderiza vista"
 
 ' Relación data <-> Parser
-YearParser ..> Data : "lee .md"
-EventParser ..> Data : "lee .md"
+YearParser ..> dataTimelineMD : "lee .md"
+EventParser ..> dataTimelineMD : "lee .md"
 
 @enduml

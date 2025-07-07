@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import Event from "../models/Event.js";
 
 class EventParser {
-  static loadBySlug(slug) {
+  static parseBySlug(slug) {
     const eventPath = path.join(
       "src",
       "data",
