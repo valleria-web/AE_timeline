@@ -1,10 +1,12 @@
 class Event {
-  constructor(slug, title, date, city, country) {
+  constructor(slug, title, year, date, city, country, description) {
     this.slug = slug;
     this.title = title;
+    this.year = year;
     this.date = date;
     this.city = city;
     this.country = country;
+    this.description = description;
     this.participants = [];
   }
 
@@ -20,14 +22,19 @@ class Event {
     return {
       slug: this.slug,
       title: this.title,
+      year: this.year,
       date: this.date,
       city: this.city,
       country: this.country,
-      participants: this.participants.map((participant) =>
-        typeof participant.getData === "function"
-          ? participant.getData()
-          : participant
-      ),
+      participants: this.participants.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        awards: p.awards.map((a) => ({
+          slug: a.slug,
+          name: a.name,
+          description: a.description
+        }))
+      }))
     };
   }
 }

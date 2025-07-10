@@ -3,31 +3,32 @@ class TimelineView {
     this.rootElement = rootElement;
   }
 
-  render(timeline) {
+  render(timelineData) {
     this.rootElement.innerHTML = "";
 
-    timeline.getYears().forEach((year) => {
-      const yearDiv = document.createElement("div");
+    timelineData.years.forEach((yearObj) => {
+      const yearDiv = document.createElement("section");
       yearDiv.className = "year-card";
-      yearDiv.innerHTML = `<h2>${year.value}</h2>`;
-
-      year.getEvents().forEach((event) => {
-        const eventDiv = document.createElement("div");
-        eventDiv.className = "event-card";
-        eventDiv.innerHTML = `
-        <h3>${event.title}</h3>
-        <p>${event.date} - ${event.city}, ${event.country}</p>
+      yearDiv.innerHTML = `<h2>${yearObj.year}</h2>
+        <p>${yearObj.description}</p>
       `;
 
-        event.getParticipant().forEach((participant) => {
-          const participantDiv = document.createElement("div");
-          participantDiv.className = "participant-card";
-          participantDiv.innerHTML = `<strong>${participant.name}</strong>`;
+      yearObj.events.forEach((evt) => {
+        const eDiv = document.createElement("article");
+        eDiv.className = "event-card";
+        eDiv.innerHTML = `
+          <h3>${evt.title}</h3>
+          <p>${evt.date} — ${evt.city}, ${evt.country}</p>
+        `;
 
-          eventDiv.appendChild(participantDiv);
+        evt.participants.forEach((p) => {
+          const pDiv = document.createElement("div");
+          pDiv.className = "participant-card";
+          pDiv.innerHTML = `<strong>${p.name}</strong>`;
+          eDiv.appendChild(pDiv);
         });
 
-        yearDiv.appendChild(eventDiv);
+        yearDiv.appendChild(eDiv);
       });
 
       this.rootElement.appendChild(yearDiv);
@@ -36,3 +37,31 @@ class TimelineView {
 }
 
 export default TimelineView;
+
+
+  /**
+   * timelineData tiene la forma:
+   * {
+   *   years: [
+   *     {
+   *       year: number,
+   *       description: string,
+   *       events: [
+   *         {
+   *           title: string,
+   *           date: string,
+   *           city: string,
+   *           country: string,
+   *           participants: [
+   *             {
+   *               slug: string,
+   *               name: string,
+   *               awards: [ { slug, name, description } ]
+   *             }
+   *           ]
+   *         }
+   *       ]
+   *     }
+   *   ]
+   * }
+   */

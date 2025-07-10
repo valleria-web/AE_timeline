@@ -1,9 +1,11 @@
 ---
-slug: "seminario-internacional-2008"
-title: "Seminário Internacional 2008"
+slug: "i-seminario-internacional"
+title: "I Seminário Internacional"
+year: "2008"
 date: "2008-09-15"
 city: "Rio de Janeiro"
 country: "Brasil"
+description: ""
 participants:
   - camila-ribeiro-da-silva
   - bob-smith

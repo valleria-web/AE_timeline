@@ -1,59 +1,61 @@
+// src/models/Participant.js
 class Participant {
-    constructor({
-        slug,
-        name,
-        roles,
-        date,
-        img,
-        description,
-        summary,
-        tags,
-        title,
-        draft
-    }) {
-        this.slug = slug;
-        this.name = name;
-        this.roles = roles;
-        this.date = date;
-        this.img = img;
-        this.description = description;
-        this.summary = summary;
-        this.tags = tags;
-        this.title = title;
-        this.draft = draft;
-        this.events = [];
-        this.awards = [];
-    }
+  constructor({
+    slug,
+    name,
+    roles,
+    image,
+    events = [],
+    awards = [],
+    presentationTitle,
+    awardTitle,
+    bioSummary,
+    presentantionSummary,
+    awardSummary,
+    draft = false,
+  }) {
+    this.slug = slug;
+    this.name = name;
+    this.roles = roles;
+    this.image = image;
+    this.events = events;
+    this.awards = awards;
+    this.presentationTitle = presentationTitle;
+    this.awardTitle = awardTitle;
+    this.bioSummary = bioSummary;
+    this.presentantionSummary = presentantionSummary;
+    this.awardSummary = awardSummary;
+    this.draft = draft;
+  }
 
-    addEvent(event) {
-        this.events.push(event);
-    }
+  addEvent(event) {
+    this.events.push(event);
+  }
 
-    addAward(award) {
-        this.awards.push(award);
-    }
+  addAward(award) {
+    this.awards.push(award);
+  }
 
-    getData() {
-        return {
-            name: this.name,
-            slug: this.slug,
-            roles: this.roles,
-            date: this.date,
-            img: this.img,
-            description: this.description,
-            summary: this.summary,
-            tags: this.tags,
-            title: this.title,
-            draft: this.draft,
-            events: this.events.map(event =>
-                typeof event.getData === "function" ? event.getData() : event
-            ),
-            awards: this.awards.map(award =>
-                typeof award.getData === "function" ? award.getData() : award
-            )
-        };
-    }
+  getData() {
+    return {
+      slug: this.slug,
+      name: this.name,
+      roles: this.roles,
+      image: this.image,
+      presentationTitle: this.presentationTitle,
+      awardTitle: this.awardTitle,
+      bioSummary: this.bioSummary,
+      presentantionSummary: this.presentantionSummary,
+      awardSummary: this.awardSummary,
+      draft: this.draft,
+      events: this.events.map((evt) =>
+        typeof evt.getData === "function" ? evt.getData() : evt
+      ),
+      awards: this.awards.map((awd) =>
+        typeof awd.getData === "function" ? awd.getData() : awd
+      ),
+    };
+  }
 }
 
 export default Participant;
-

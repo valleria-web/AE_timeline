@@ -1,11 +1,11 @@
-import App from "../src/controllers/App.js";
-import TimelineView from "../src/views/TimelineView.js";
+import TimelineView from "./js/TimelineView.js";
 
-const app = new App();
-const timeline = app.init();
+async function bootstrap() {
+  const res = await fetch("/api/timeline");
+  const data = await res.json();
+  const root = document.getElementById("timeline-root");
+  const view = new TimelineView(root);
+  view.render(data);
+}
 
-const rootElement = document.getElementById("timeline-root");
-
-const view = new TimelineView(rootElement);
-
-view.render(timeline);
+bootstrap();

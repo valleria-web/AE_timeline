@@ -2,6 +2,25 @@
 
 skinparam packageStyle rectangle
 
+' === PUBLICO (Front-end) ===
+package "Public" {
+    class index_html << (F,#FFDBAA) >>
+    class style_css  << (F,#E2EEFF) >>
+    class main_js    << (F,#E2FFDB) >>
+    class TimelineView_js << (F,#E2FFDB) >> {
+        + render(timelineData)
+    }
+}
+
+' === DATA ===
+package "dataTimelineMD" {
+    package "awards" {}
+    package "events" {}
+    package "participants" {}
+    package "years" {}
+}
+
+
 ' === MODELO ===
 package "Modelo" {
     class Timeline {
@@ -49,30 +68,6 @@ package "Modelo" {
     }
 }
 
-' === DATA ===
-package "dataTimelineMD" {
-    package "awards" {}
-    package "events" {}
-    package "participants" {}
-    package "years" {}
-}
-
-' === DATA Parser ===
-package "dataParser" {
-    class YearParser {
-        + static parseFromMd(filePath): Year
-    }
-    class EventParser {
-        + static parseFromMD(filePath): Event
-    }
-    class ParticipantParser {
-        + static parseFromMD(filePath): Participant
-    }
-    class AwardParser {
-        + static parseFromMD(filePath): Award
-    }
-}
-
 ' === CONTROLADORES ===
 package "Controladores" {
     class App {
@@ -89,14 +84,19 @@ package "Servidor" {
     }
 }
 
-
-' === PUBLICO (Front-end) ===
-package "Public" {
-    class index_html << (F,#FFDBAA) >>
-    class style_css  << (F,#E2EEFF) >>
-    class main_js    << (F,#E2FFDB) >>
-    class TimelineView_js << (F,#E2FFDB) >> {
-        + render(timelineData)
+' === DATA Parser ===
+package "dataParser" {
+    class YearParser {
+        + static parseFromMd(filePath): Year
+    }
+    class EventParser {
+        + static parseFromMD(filePath): Event
+    }
+    class ParticipantParser {
+        + static parseFromMD(filePath): Participant
+    }
+    class AwardParser {
+        + static parseFromMD(filePath): Award
     }
 }
 
@@ -127,7 +127,6 @@ index_html --> main_js     : "carga script"
 main_js --> server_js      : "fetch datos"
 main_js --> TimelineView_js: "importa"
 TimelineView_js --> index_html : "renderiza en"
-
 
 ' Relación data <-> Parser
 YearParser ..> dataTimelineMD : "lee y parsea desde .md"
