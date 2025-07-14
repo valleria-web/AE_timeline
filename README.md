@@ -4,32 +4,6 @@ Este projeto foi desenvolvido como **Atividade Extensionista** durante o segundo
 
 ---
 
-## 🎬 Capítulos do Curso em Vídeo
-
-- `03:22` – Resumo com ChatGPT  
-- `04:11` – Justificativa da Atividade Extensionista  
-- `05:18` – Especificação de Requisitos do Software (SRS)  
-- `15:02` – Brainstorming: Estruturação dos Dados  
-- `23:10` – Arquivos Markdown  
-- `26:24` – Modelagem dos Dados  
-- `38:11` – Implementação da Classe `Timeline`  
-- `43:55` – Implementação da Classe `Year`  
-- `49:17` – Implementação da Classe `Event`  
-- `55:22` – Implementação da Classe `Participant`  
-- `58:51` – Implementação da Classe `Award`  
-- `01:03:10` – Novo Brainstorming  
-- `01:06:23` – Classe `App`  
-- `01:13:10` – Classe `TimelineView`  
-- `01:26:47` – Debugging  
-- `01:34:36` – Renderização de Objetos Hardcoded  
-- `01:40:29` – Nova Estruturação dos Dados  
-- `01:51:14` – Parseadores de Dados (`.md` → JS)  
-- `02:02:14` – Testes de Integração do Sistema  
-- `02:11:54` – Implementação do Módulo de Busca  
-- `02:32:48` – Conclusão  
-
----
-
 ## 🧠 Tecnologias e Conceitos Aplicados
 
 - JavaScript moderno (ES6+)
