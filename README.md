@@ -75,7 +75,7 @@ O sistema é estruturado em camadas bem definidas:
 - **Público (Front-end)**: Interface construída com HTML, CSS e JavaScript para exibição dos dados
 
 > Consulte o diagrama UML completo do projeto:  
-> ![Diagrama UML do Projeto Timeline](plantuml-diagrama-timeline.png)
+> ![Diagrama UML do Projeto Timeline](out/timeline/timeline.png)
 
 ---
 
