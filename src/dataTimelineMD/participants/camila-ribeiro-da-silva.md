@@ -1,10 +1,10 @@
 ---
 slug: "camila-ribeiro-da-silva"
-name: "camila-ribeiro-da-silva"
+name: "Camila Ribeiro da Silva"
 role: ["Ponente"] 
 image: "images/camila-ribeiro-da-silva.jpg" 
-events: ["i-seminario-internacional", "premio-inovacao-2009"]
-awards: ["Medalha de Ouro"]
+events: ["i-seminario-internacional"]
+awards: ["medalha-de-ouro-2008"]
 presentationTitle: "IA nos sistemas educativos"
 awardTitle: "Medalha de Ouro"
 bioSummary: "Educadora, especialista em IA"

@@ -8,20 +8,31 @@ class ParticipantParser {
     const raw = fs.readFileSync(filePath, "utf8");
     const { data } = matter(raw);
 
-    return new Participant({
-      slug: data.slug,
-      name: data.name,
-      role: data.role,
-      image: data.image,
-      events: Array.isArray(data.events) ? data.events : [],
-      awards: Array.isArray(data.awards) ? data.awards : [],
-      presentationTitle: data.presentationTitle,
-      awardTitle: data.awardTitle,
-      bioSummary: data.bioSummary,
-      presentantionSummary: data.presentantionSummary,
-      awardSummary: data.awardSummary,
-      draft: data.draft ?? false
-    });
+    // Normaliza roles (acepta array o string)
+    let roles = [];
+    if (Array.isArray(data.role)) roles = data.role;
+    else if (typeof data.role === "string") roles = [data.role];
+
+    // Asegura que todo lo importante esté bien mapeado
+    const participantProps = {
+      slug: data.slug || "",
+      name: data.name || "",
+      roles: roles,
+      image: data.image || "",
+      events: Array.isArray(data.events) ? data.events.filter(e => typeof e === "string") : [],
+      awards: Array.isArray(data.awards) ? data.awards.filter(a => typeof a === "string") : [],
+      presentationTitle: data.presentationTitle || data.presentationtitle || "",
+      awardTitle: data.awardTitle || data.awardtitle || "",
+      bioSummary: data.bioSummary || data.biosummary || "",
+      presentantionSummary: data.presentantionSummary || data.presentationSummary || data.presentationsummary || "",
+      awardSummary: data.awardSummary || data.awardsummary || "",
+      draft: data.draft === true || data.draft === "true" // true si es boolean o string 'true'
+    };
+
+    // Si quieres depurar, imprime lo que se está parseando
+    // console.log("[ParticipantParser] Parsed:", participantProps);
+
+    return new Participant(participantProps);
   }
 }
 

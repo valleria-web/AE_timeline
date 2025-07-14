@@ -1,6 +1,11 @@
 /AE_timeline
 ├── /public
 │   │    └── /img  
+│   │    └── /js  
+│   │      ├── AwardView.js
+│   │      ├── EventView.js
+│   │      ├── ParticipantView.js
+│   │      ├── TimelineView.js
 │   │    └── /samples 
 │   │        ├── Especificacao
 │   │        └── SampleMD      
@@ -16,11 +21,16 @@
 │   │   └── Participant.js 
 │   ├── /controllers
 │   │    └── App.js
-│   ├── /views 
-│   │    └── TimelineView.js
 │   ├── /dataParser 
 │   │    ├── EventParser.js
 │   │    └── YearParser.js
+│   ├── /searchService
+│   │    ├── BaseSearcher.js
+│   │    ├── SearchService.js
+│   │    ├── YearSearcher.js
+│   │    ├── EventSearcher.js
+│   │    ├── ParticipantSearcher.js
+│   │    └── AwardSearcher.js
 │   ├─ /dataTimelineMD
 │   │    ├─ /awards
 │   │    │    ├─ medalha-de-oro.md 

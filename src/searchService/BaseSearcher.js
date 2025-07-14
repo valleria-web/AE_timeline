@@ -1,4 +1,4 @@
-export default class BaseSearcher {
+class BaseSearcher {
   constructor(items = []) {
     this.items = items;
   }
@@ -7,3 +7,5 @@ export default class BaseSearcher {
     throw new Error("search() debe implementarse en la subclase");
   }
 }
+
+export default BaseSearcher;

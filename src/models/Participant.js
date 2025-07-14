@@ -1,9 +1,8 @@
-// src/models/Participant.js
 class Participant {
   constructor({
     slug,
     name,
-    roles,
+    roles = [],
     image,
     events = [],
     awards = [],
@@ -12,7 +11,7 @@ class Participant {
     bioSummary,
     presentantionSummary,
     awardSummary,
-    draft = false,
+    draft = false
   }) {
     this.slug = slug;
     this.name = name;
@@ -28,12 +27,19 @@ class Participant {
     this.draft = draft;
   }
 
-  addEvent(event) {
-    this.events.push(event);
+  addEvent(eventObj) {
+    if (!eventObj) return;
+    // Evita duplicados por slug
+    if (!this.events.some(e => e.slug === eventObj.slug)) {
+      this.events.push(eventObj);
+    }
   }
 
-  addAward(award) {
-    this.awards.push(award);
+  addAward(awardObj) {
+    if (!awardObj) return;
+    if (!this.awards.some(a => a.slug === awardObj.slug)) {
+      this.awards.push(awardObj);
+    }
   }
 
   getData() {
@@ -48,12 +54,8 @@ class Participant {
       presentantionSummary: this.presentantionSummary,
       awardSummary: this.awardSummary,
       draft: this.draft,
-      events: this.events.map((evt) =>
-        typeof evt.getData === "function" ? evt.getData() : evt
-      ),
-      awards: this.awards.map((awd) =>
-        typeof awd.getData === "function" ? awd.getData() : awd
-      ),
+      events: this.events.map(evt => typeof evt.getData === "function" ? evt.getData() : evt),
+      awards: this.awards.map(awd => typeof awd.getData === "function" ? awd.getData() : awd),
     };
   }
 }

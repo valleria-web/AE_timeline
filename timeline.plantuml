@@ -33,7 +33,7 @@ package "Modelo" {
 
     class Participant {
         - name: string
-        - role: string
+        - roles: string[]
         - img: string
         - events: Event[]
         - awards: Award[]
@@ -84,24 +84,71 @@ package "Controladores" {
 package "Servidor" {
     class server_js << (F,#FFDDAA) >> {
         + GET /api/timeline
+        + GET /api/search
         + express.static("public")
         + listen(port)
     }
 }
 
+' === SEARCH ===
+package "Search" {
+    abstract class BaseSearcher {
+        - items: T[]
+        + search(query): T[]
+    }
+
+    class YearSearcher {
+        + search(query): Year[]
+    }
+
+    class EventSearcher {
+        + search(query): Event[]
+    }
+
+    class ParticipantSearcher {
+        + search(query): Participant[]
+    }
+
+    class AwardSearcher {
+        + search(query): Award[]
+    }
+
+    class SearchService {
+        - searchers: object
+        + searchAll(query): object
+    }
+
+    SearchService o-- YearSearcher
+    SearchService o-- EventSearcher
+    SearchService o-- ParticipantSearcher
+    SearchService o-- AwardSearcher
+
+    BaseSearcher <|-- YearSearcher
+    BaseSearcher <|-- EventSearcher
+    BaseSearcher <|-- ParticipantSearcher
+    BaseSearcher <|-- AwardSearcher
+}
 
 ' === PUBLICO (Front-end) ===
 package "Public" {
     class index_html << (F,#FFDBAA) >>
     class style_css  << (F,#E2EEFF) >>
     class main_js    << (F,#E2FFDB) >>
-    class TimelineView_js << (F,#E2FFDB) >> {
+    class TimelineView_js << (F,#B0D6FF) >> {
         + render(timelineData)
+    }
+    class EventView_js << (F,#B0FFD6) >> {
+        + render(eventsData)
+    }
+    class ParticipantView_js << (F,#FFF7AA) >> {
+        + render(participantsData)
+    }
+    class AwardView_js << (F,#FFCFCF) >> {
+        + render(awardsData)
     }
 }
 
 ' === RELACIONES ENTRE CAPAS ===
-
 Timeline *-- Year           : composition
 Year *-- Event             : composition
 Event *-- Participant      : composition
@@ -125,9 +172,18 @@ server_js --> Public       : sirve carpeta estática
 index_html --> style_css   : "vincula"
 index_html --> main_js     : "carga script"
 main_js --> server_js      : "fetch datos"
-main_js --> TimelineView_js: "importa"
-TimelineView_js --> index_html : "renderiza en"
 
+main_js ..> TimelineView_js : "renderiza vista general"
+main_js ..> EventView_js    : "renderiza eventos"
+main_js ..> ParticipantView_js : "renderiza participantes"
+main_js ..> AwardView_js    : "renderiza premios"
+
+TimelineView_js --> index_html : "renderiza en"
+EventView_js --> index_html    : "renderiza en"
+ParticipantView_js --> index_html : "renderiza en"
+AwardView_js --> index_html    : "renderiza en"
+
+App ..> SearchService : usa
 
 ' Relación data <-> Parser
 YearParser ..> dataTimelineMD : "lee y parsea desde .md"
@@ -136,4 +192,6 @@ ParticipantParser ..> dataTimelineMD: "lee participantes"
 AwardParser ..> dataTimelineMD: "lee premios"
 
 @enduml
+
+
 

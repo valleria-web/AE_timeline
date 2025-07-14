@@ -9,8 +9,29 @@
   <body>
     <div><h1>TimeLine</h1></div>
 
+    <!-- Barra de búsqueda -->
+    <div id="search-bar">
+      <form id="search-form">
+        <label for="search-type">Filtrar por:</label>
+        <select id="search-type" name="search-type">
+          <option value="year">Year</option>
+          <option value="event">Event</option>
+          <option value="participant">Participant</option>
+          <option value="award">Premio</option>
+        </select>
+        <input
+          type="text"
+          id="search-query"
+          name="search-query"
+          placeholder="Año o nombre del evento"
+        />
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+
     <div id="timeline-root"></div>
 
     <script type="module" src="main.js"></script>
   </body>
 </html>
+

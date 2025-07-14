@@ -1,9 +1,15 @@
 import YearSearcher from "./YearSearcher.js";
+import EventSearcher from "./EventSearcher.js";
+import ParticipantSearcher from "./ParticipantSearcher.js";
+import AwardSearcher from "./AwardSearcher.js";
 
-export default class SearchService {
+class SearchService {
   constructor(data) {
     this.searchers = {
-      years: new YearSearcher(data.years),
+      years: new YearSearcher(data.years || []),
+      events: new EventSearcher(data.events || []),
+      participants: new ParticipantSearcher(data.participants || []),
+      awards: new AwardSearcher(data.awards || []),
     };
   }
 
@@ -15,3 +21,5 @@ export default class SearchService {
     return results;
   }
 }
+
+export default SearchService;

@@ -30,9 +30,7 @@ class Event {
         slug: p.slug,
         name: p.name,
         awards: p.awards.map((a) => ({
-          slug: a.slug,
           name: a.name,
-          description: a.description
         }))
       }))
     };

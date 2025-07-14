@@ -1,9 +1,9 @@
 ---
-slug: "premio-inovacao-2008"
-name: "Prêmio Inovação 2008"
-year: "2008"
-date: "10/10/2008"
-city: "Rio de Janeiro"
+slug: "premio-inovacao-2009"
+name: "Prêmio Inovação 2009"
+year: "2009"
+date: "10/10/2009"
+city: "Sao Paulo"
 country: "Brasil"
 description: "Reconhecimento ao participante que mais se destacou no evento"
 winners:
