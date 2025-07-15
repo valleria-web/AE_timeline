@@ -89,10 +89,13 @@ O sistema é estruturado em camadas bem definidas:
 2. Instale as dependências:
     npm install
 
-3. Inicie o servidor:
+3. Instale express:
+    npm install express
+
+4. Inicie o servidor:
    node server.js
 
-4. Acesse a aplicação:
+5. Acesse a aplicação:
    http://localhost:3000
 
 
