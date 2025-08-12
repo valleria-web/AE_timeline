@@ -11,7 +11,10 @@ class Participant {
     bioSummary,
     presentantionSummary,
     awardSummary,
-    draft = false
+    draft = false,
+    content = "",
+    membership,
+    country,
   }) {
     this.slug = slug;
     this.name = name;
@@ -25,11 +28,13 @@ class Participant {
     this.presentantionSummary = presentantionSummary;
     this.awardSummary = awardSummary;
     this.draft = draft;
+    this.content = content;
+    this.membership = membership;
+    this.country = country
   }
 
   addEvent(eventObj) {
     if (!eventObj) return;
-    // Evita duplicados por slug
     if (!this.events.some(e => e.slug === eventObj.slug)) {
       this.events.push(eventObj);
     }
@@ -54,6 +59,8 @@ class Participant {
       presentantionSummary: this.presentantionSummary,
       awardSummary: this.awardSummary,
       draft: this.draft,
+      membership: this.membership,
+      country: this.country,
       events: this.events.map(evt => typeof evt.getData === "function" ? evt.getData() : evt),
       awards: this.awards.map(awd => typeof awd.getData === "function" ? awd.getData() : awd),
     };

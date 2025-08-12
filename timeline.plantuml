@@ -73,6 +73,13 @@ package "dataParser" {
     }
 }
 
+' === LIBRERÍAS ===
+package "node_modules" {
+    class gray_matter <<Library>> {
+        + matter(string|Buffer)
+    }
+}
+
 ' === CONTROLADORES ===
 package "Controladores" {
     class App {
@@ -85,6 +92,7 @@ package "Servidor" {
     class server_js << (F,#FFDDAA) >> {
         + GET /api/timeline
         + GET /api/search
+        + GET /api/participant
         + express.static("public")
         + listen(port)
     }
@@ -190,6 +198,12 @@ YearParser ..> dataTimelineMD : "lee y parsea desde .md"
 EventParser ..> dataTimelineMD: "lee eventos"
 ParticipantParser ..> dataTimelineMD: "lee participantes"
 AwardParser ..> dataTimelineMD: "lee premios"
+
+' Uso de gray-matter
+YearParser ..> gray_matter : "usa matter()"
+EventParser ..> gray_matter : "usa matter()"
+ParticipantParser ..> gray_matter : "usa matter()"
+AwardParser ..> gray_matter : "usa matter()"
 
 @enduml
 

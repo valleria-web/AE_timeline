@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,31 +7,48 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div><h1>TimeLine</h1></div>
+    <header>
+      <h1>Atividade Extensionista: Timeline Dinâmica com Arquivos Markdown</h1>
+    </header>
 
     <!-- Barra de búsqueda -->
-    <div id="search-bar">
-      <form id="search-form">
-        <label for="search-type">Filtrar por:</label>
+    <nav id="search-bar">
+      <form id="search-form" autocomplete="off">
+        <label for="search-type" style="font-weight:bold;">Filtrar por:</label>
         <select id="search-type" name="search-type">
-          <option value="year">Year</option>
-          <option value="event">Event</option>
-          <option value="participant">Participant</option>
+          <option value="year">Año</option>
+          <option value="event">Evento</option>
+          <option value="participant">Participante</option>
           <option value="award">Premio</option>
         </select>
+
+        <!-- Submenú, solo visible cuando "Premio" -->
+        <select id="award-type-submenu" name="award-type-submenu" style="display:none; margin-left: 8px;">
+          <option value="">Tipo de premio...</option>
+          <option value="sapientiae">Premio Sapientiae</option>
+          <option value="embajador">Embajador de la Paz</option>
+          <option value="dhc">Doctor Honoris Causa</option>
+          <option value="maestro">Maestro Ad Vitam</option>
+          <option value="pax">Pax Magister</option>
+        </select>
+
         <input
           type="text"
           id="search-query"
           name="search-query"
-          placeholder="Año o nombre del evento"
+          placeholder="Año, participante, evento o ganador"
+          style="min-width:220px"
         />
         <button type="submit">Buscar</button>
       </form>
-    </div>
+    </nav>
 
-    <div id="timeline-root"></div>
+    <!-- Aquí se muestra el contenido dinámico -->
+    <main>
+      <div id="timeline-root"></div>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script type="module" src="main.js"></script>
   </body>
 </html>
-

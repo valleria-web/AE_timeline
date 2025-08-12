@@ -1,6 +1,6 @@
 body {
   background: #f7f8fa;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   color: #23272f;
   margin: 0;
   padding: 40px;
@@ -71,4 +71,29 @@ body {
   .event-card {
     padding: 12px 8px;
   }
+}
+
+/* Quita el subrayado de todos los <a> dentro de la línea de tiempo */
+.year-card a,
+.event-card a,
+.participant-card a,
+.award-card a {
+  text-decoration: none;
+}
+
+
+/* Opcional: Vuelve a mostrar el subrayado al pasar el mouse */
+.year-card a:hover,
+.events-list a:hover,
+.awards-container a:hover,
+.participants-container a:hover {
+  text-decoration: underline;
+}
+
+.year-card a:hover,
+.events-list a:hover,
+.awards-container a:hover,
+.participants-container a:hover {
+  text-decoration: underline;
+  color: #506eff; /* Ejemplo: resalta color al pasar mouse */
 }

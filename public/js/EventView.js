@@ -1,21 +1,24 @@
+// js/EventView.js
+
 class EventView {
   constructor(rootElement) {
     this.rootElement = rootElement;
   }
 
-  render(data) {
+  async render(data, searchQuery = "") {
     this.rootElement.innerHTML = "";
-
-    // Flexible: acepta { events: [...] } o { years: [...] }
     let eventsArr = [];
+
     if (Array.isArray(data.events)) {
       eventsArr = data.events;
     } else if (Array.isArray(data.years)) {
-      data.years.forEach(yearObj => {
+      data.years.forEach((yearObj) => {
         if (Array.isArray(yearObj.events)) {
-          yearObj.events.forEach(evt => eventsArr.push(evt));
+          yearObj.events.forEach((evt) => eventsArr.push(evt));
         }
       });
+    } else if (data.slug && data.title) {
+      eventsArr = [data];
     }
 
     if (!eventsArr.length) {
@@ -23,63 +26,65 @@ class EventView {
       return;
     }
 
-    // Listado elegante con cards y jerarquía simple
-    const eventsList = document.createElement("div");
-    eventsList.className = "events-list";
-    eventsList.style.display = "flex";
-    eventsList.style.flexDirection = "column";
-    eventsList.style.gap = "2.5rem";
+    if (eventsArr.length > 1) {
+      const ul = document.createElement("ul");
+      ul.className = "events-list-simple";
+      ul.style.fontSize = "1.2rem";
+      ul.style.lineHeight = "1.8";
+      ul.style.margin = "2.5rem auto";
+      ul.style.maxWidth = "540px";
+      ul.style.padding = "0 0 2.5rem 0";
+      eventsArr.forEach((evt) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="#/evento/${evt.slug}" data-slug="${
+          evt.slug
+        }"><b>${evt.title || evt.slug}</b></a>`;
 
-    eventsArr.forEach(evt => {
-      const card = document.createElement("div");
-      card.className = "event-card";
-      card.style.background = "#fff";
-      card.style.border = "1px solid #e5e7eb";
-      card.style.borderRadius = "18px";
-      card.style.boxShadow = "0 4px 18px rgba(0,0,0,0.06)";
-      card.style.padding = "2rem";
-      card.style.marginBottom = "1rem";
+        ul.appendChild(li);
+      });
+      this.rootElement.appendChild(ul);
 
-      card.innerHTML = `
-        <h2 style="color:#4753f5;margin:0 0 1rem 0;">${evt.title || "Evento sin título"}</h2>
-        <div style="font-size:1.05rem;color:#222;">
-          <span><b>Año:</b> ${evt.year || "-"}</span> ·
-          <span><b>Fecha:</b> ${evt.date || "-"}</span> ·
-          <span><b>Ciudad:</b> ${evt.city || "-"}</span> ·
-          <span><b>País:</b> ${evt.country || "-"}</span>
-        </div>
-      `;
+      // Al hacer click en el nombre del evento, carga el md completo
+      ul.addEventListener("click", async (e) => {
+        const link = e.target.closest("a[data-slug]");
+        if (link) {
+          e.preventDefault();
+          const slug = link.getAttribute("data-slug");
+          // Cambia el hash en la URL para navegación SPA
+          window.location.hash = `#/evento/${slug}`;
+        }
+      });
 
-      // Participantes (en jerarquía elegante)
-      if (Array.isArray(evt.participants) && evt.participants.length > 0) {
-        const ul = document.createElement("ul");
-        ul.className = "event-participants-list";
-        ul.style.margin = "1.2rem 0 0 1rem";
-        evt.participants.forEach(p => {
-          const li = document.createElement("li");
-          li.style.marginBottom = ".3rem";
-          li.innerHTML = `<b>${p.name}</b>`;
-          // Premios del participante (solo nombre)
-          if (Array.isArray(p.awards) && p.awards.length > 0) {
-            const awUl = document.createElement("ul");
-            awUl.className = "participant-awards";
-            awUl.style.margin = "0.25rem 0 0 1.5rem";
-            p.awards.forEach(a => {
-              const awLi = document.createElement("li");
-              awLi.innerHTML = `<span style="color:#9333ea;">🏅 ${a.name}</span>`;
-              awUl.appendChild(awLi);
-            });
-            li.appendChild(awUl);
-          }
-          ul.appendChild(li);
-        });
-        card.appendChild(ul);
-      }
+      return;
+    }
 
-      eventsList.appendChild(card);
-    });
+    // Si solo hay 1 evento: renderiza el .md completo (sin metadatos)
+    const event = eventsArr[0];
+    if (!event || !event.slug) {
+      this.rootElement.innerHTML =
+        "<p>No se pudo encontrar el archivo del evento.</p>";
+      return;
+    }
 
-    this.rootElement.appendChild(eventsList);
+    try {
+      const res = await fetch(`/api/events/${event.slug}/md`);
+      if (!res.ok) throw new Error("No se pudo cargar el archivo md.");
+      const md = await res.text();
+      const cleanMd = md.replace(/^\s*---[\s\S]*?---\s*/m, "");
+      const html = window.marked
+        ? marked.parse(cleanMd)
+        : `<pre>${cleanMd}</pre>`;
+      const div = document.createElement("div");
+      div.className = "event-md-full";
+      div.style.maxWidth = "800px";
+      div.style.margin = "2rem auto";
+      div.innerHTML = html;
+
+      this.rootElement.appendChild(div);
+    } catch (err) {
+      this.rootElement.innerHTML =
+        "<p>No se pudo cargar el perfil del evento.</p>";
+    }
   }
 }
 

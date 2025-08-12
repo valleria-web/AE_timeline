@@ -6,7 +6,7 @@ class ParticipantParser {
   static parseFromMD(filePath) {
     if (!fs.existsSync(filePath)) return null;
     const raw = fs.readFileSync(filePath, "utf8");
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
 
     // Normaliza roles (acepta array o string)
     let roles = [];
@@ -26,11 +26,9 @@ class ParticipantParser {
       bioSummary: data.bioSummary || data.biosummary || "",
       presentantionSummary: data.presentantionSummary || data.presentationSummary || data.presentationsummary || "",
       awardSummary: data.awardSummary || data.awardsummary || "",
-      draft: data.draft === true || data.draft === "true" // true si es boolean o string 'true'
+      draft: data.draft === true || data.draft === "true",
+      content
     };
-
-    // Si quieres depurar, imprime lo que se está parseando
-    // console.log("[ParticipantParser] Parsed:", participantProps);
 
     return new Participant(participantProps);
   }

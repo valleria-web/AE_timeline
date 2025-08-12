@@ -8,10 +8,7 @@ class YearParser {
     const raw = fs.readFileSync(filePath, "utf8");
     const { data } = matter(raw);
 
-    return new Year(
-      data.slug, 
-      data.year, 
-      data.description);
+    return new Year(data.slug, data.year, data.description, data.president);
   }
 }
 

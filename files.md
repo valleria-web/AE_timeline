@@ -1,11 +1,13 @@
 /AE_timeline
 ├── /public
 │   │    └── /img  
+│   │    │      └── /awards  
+│   │    │      └── /logos  
 │   │    └── /js  
-│   │      ├── AwardView.js
-│   │      ├── EventView.js
-│   │      ├── ParticipantView.js
-│   │      ├── TimelineView.js
+│   │    │      ├── AwardView.js
+│   │    │      ├── EventView.js
+│   │    │      ├── ParticipantView.js
+│   │    │      ├── TimelineView.js
 │   │    └── /samples 
 │   │        ├── Especificacao
 │   │        └── SampleMD      
@@ -44,4 +46,5 @@
 │   │     └─ /years
 │   │          ├─ 2009.md
 │   │          └─ 2008.md
+
 

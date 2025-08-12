@@ -1,9 +1,10 @@
 class Year {
-  constructor(slug, year, description = "") {
+  constructor(slug, year, description = "", president) {
     this.slug = slug;
     this.year = year;
     this.description = description || "";
     this.events = [];
+    this.president = president;
   }
 
   addEvent(event) {
@@ -22,6 +23,7 @@ class Year {
       events: this.events.map((event) =>
         typeof event.getData === "function" ? event.getData() : event
       ),
+      president: this.president,
     };
   }
 }

@@ -10,11 +10,6 @@ import ParticipantParser from "../dataParser/ParticipantParser.js";
 import AwardParser from "../dataParser/AwardParser.js";
 import SearchService from "../searchService/SearchService.js";
 
-import AwardSearcher from "../searchService/AwardSearcher.js";
-import ParticipantSearcher from "../searchService/ParticipantSearcher.js";
-import EventSearcher from "../searchService/EventSearcher.js";
-import YearSearcher from "../searchService/YearSearcher.js";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -24,50 +19,52 @@ class App {
   }
 
   init() {
-    // ── 1) Cargar Años ─────────────────────────────
+    // 1. Cargar años
     const yearsDir = path.join(__dirname, "../dataTimelineMD/years");
     const years = fs.existsSync(yearsDir)
-      ? fs.readdirSync(yearsDir).filter(f => f.endsWith(".md"))
+      ? fs.readdirSync(yearsDir).filter((f) => f.endsWith(".md"))
       : [];
-    years.forEach(file => {
+    years.forEach((file) => {
       const y = YearParser.parseFromMd(path.join(yearsDir, file));
       if (y) this.timeline.addYear(y);
       else console.warn("⚠️ Falló Year:", file);
     });
 
-    // ── 2) Cargar Eventos ──────────────────────────
+    // 2. Cargar eventos
     const eventsDir = path.join(__dirname, "../dataTimelineMD/events");
     const events = fs.existsSync(eventsDir)
-      ? fs.readdirSync(eventsDir).filter(f => f.endsWith(".md"))
+      ? fs.readdirSync(eventsDir).filter((f) => f.endsWith(".md"))
       : [];
-    events.forEach(file => {
+    events.forEach((file) => {
       const evt = EventParser.parseFromMD(path.join(eventsDir, file));
       if (!evt) return console.warn("⚠️ Falló Event:", file);
-      const yearObj = this.timeline.getYears().find(y => Number(evt.year) === y.year);
+      const yearObj = this.timeline
+        .getYears()
+        .find((y) => Number(evt.year) === y.year);
       if (yearObj) yearObj.addEvent(evt);
       else console.warn(`⚠️ Sin Year para ${evt.year}, evento ${evt.slug}`);
     });
 
-    // ── 3) Flatten eventos ─────────────────────────
-    const allEvents = this.timeline.getYears().flatMap(y => y.events);
+    // 3. Flatten eventos
+    const allEvents = this.timeline.getYears().flatMap((y) => y.events);
 
-    // ── 4) Cargar Participantes ────────────────────
+    // 4. Cargar participantes
     const partsDir = path.join(__dirname, "../dataTimelineMD/participants");
     const participants = fs.existsSync(partsDir)
-      ? fs.readdirSync(partsDir).filter(f => f.endsWith(".md"))
+      ? fs.readdirSync(partsDir).filter((f) => f.endsWith(".md"))
       : [];
     const allParticipants = [];
-    participants.forEach(file => {
+    participants.forEach((file) => {
       const fullPath = path.join(partsDir, file);
       const p = ParticipantParser.parseFromMD(fullPath);
       if (!p) return console.warn("⚠️ Falló Participant:", file);
 
-      // Relaciona eventos con participantes (bidireccional)
+      // Relacionar eventos ↔ participantes
       const raw = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(raw);
       const eventSlugs = Array.isArray(data.events) ? data.events : [];
-      eventSlugs.forEach(slug => {
-        const evt = allEvents.find(e => e.slug === slug);
+      eventSlugs.forEach((slug) => {
+        const evt = allEvents.find((e) => e.slug === slug);
         if (evt) {
           p.addEvent(evt);
           evt.addParticipant(p);
@@ -76,58 +73,64 @@ class App {
         }
       });
 
-      // Previene duplicados por slug
-      if (!allParticipants.some(par => par.slug === p.slug)) {
+      if (!allParticipants.some((par) => par.slug === p.slug)) {
         allParticipants.push(p);
       }
     });
 
-    // ── 5) Cargar Premios (Awards) ─────────────────
+    // 5. Cargar premios (awards)
     const awardsDir = path.join(__dirname, "../dataTimelineMD/awards");
     const awards = fs.existsSync(awardsDir)
-      ? fs.readdirSync(awardsDir).filter(f => f.endsWith(".md"))
+      ? fs.readdirSync(awardsDir).filter((f) => f.endsWith(".md"))
       : [];
     const allAwards = [];
-    awards.forEach(file => {
+    awards.forEach((file) => {
       const fullPath = path.join(awardsDir, file);
       const award = AwardParser.parseFromMD(fullPath);
       if (!award) return console.warn("⚠️ Falló Award:", file);
 
-      // Relaciona ganadores y premios (bidireccional)
+      // Relacionar ganadores ↔ premios (bidireccional)
       const raw = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(raw);
-      const winnerSlugs = Array.isArray(data.winners) ? data.winners : [];
-      winnerSlugs.forEach(slug => {
-        const participant = allParticipants.find(p => p.slug === slug);
+      const winnerObjs = Array.isArray(data.winners) ? data.winners : [];
+      award.winners = [];
+      winnerObjs.forEach((win) => {
+        // win puede ser string (slug) o objeto { slug, name }
+        const slug = typeof win === "object" && win.slug ? win.slug : win;
+        const name = typeof win === "object" && win.name ? win.name : slug;
+        const participant = allParticipants.find((p) => p.slug === slug);
         if (participant) {
+          // Bidireccional: Participante recebe prêmio
           participant.addAward(award);
-          award.winners = Array.isArray(award.winners) ? award.winners : [];
-          if (!award.winners.find(p => p.slug === participant.slug)) {
-            award.winners.push(participant);
+          // Prêmio recebe referência ao participante (name sempre presente)
+          if (!award.winners.find((p) => p.slug === participant.slug)) {
+            award.winners.push({ slug: participant.slug, name: participant.name });
           }
         } else {
-          console.warn(`⚠️ Ganador "${slug}" no encontrado como participante`);
+          console.warn(`Ganador "${name}" no encontrado como participante`);
         }
       });
 
-      if (!allAwards.some(a => a.slug === award.slug)) {
+      if (!allAwards.some((a) => a.slug === award.slug)) {
         allAwards.push(award);
       }
     });
 
-    // ── 6) Resolver awards en participantes (slug → objeto) ─────
+    // 6. Resolver awards en participantes (slug → objeto)
     const awardMap = new Map();
-    allAwards.forEach(award => awardMap.set(award.slug, award));
-    allParticipants.forEach(participant => {
+    allAwards.forEach((award) => awardMap.set(award.slug, award));
+    allParticipants.forEach((participant) => {
       if (Array.isArray(participant.awards)) {
-        participant.awards = participant.awards.map(slug => {
-          if (typeof slug === "string" && awardMap.has(slug)) {
-            return awardMap.get(slug);
-          } else if (typeof slug === "string") {
-            console.warn(`[App] Participante "${participant.slug}" tiene premio desconocido: "${slug}"`);
-            return { name: slug + " (Premio no encontrado)", description: "" };
-          } else if (typeof slug === "object" && slug.name) {
-            return slug;
+        participant.awards = participant.awards.map((slugOrAward) => {
+          if (typeof slugOrAward === "string" && awardMap.has(slugOrAward)) {
+            return awardMap.get(slugOrAward);
+          } else if (typeof slugOrAward === "string") {
+            console.warn(
+              `[App] Participante "${participant.slug}" tiene premio desconocido: "${slugOrAward}"`
+            );
+            return { name: slugOrAward + " (Premio no encontrado)", description: "" };
+          } else if (typeof slugOrAward === "object" && slugOrAward.name) {
+            return slugOrAward;
           } else {
             return { name: "Premio desconocido", description: "" };
           }
@@ -135,7 +138,7 @@ class App {
       }
     });
 
-    // --- DEVUELVE EL TIMELINE, AWARDS Y PARTICIPANTS ---
+    // --- Devuelve timeline, awards y participants
     return {
       timeline: this.timeline,
       awards: allAwards,
@@ -145,6 +148,7 @@ class App {
 }
 
 export default App;
+
 
 /*
 const { timeline, participants, awards } = new App().init();
@@ -205,14 +209,13 @@ const resultado = yearSearcher.search(2010)
 console.log(resultado)
 */
 
-
 // 2) Preparar arrays para SearchService
 
 const { timeline, participants, awards } = new App().init();
 
 const yearArr = timeline.getYears();
 
-const eventsArr = yearArr.flatMap(y => y.events);
+const eventsArr = yearArr.flatMap((y) => y.events);
 
 const participantsArr = participants;
 
@@ -223,9 +226,8 @@ const searchService = new SearchService({
   years: yearArr,
   events: eventsArr,
   participants: participantsArr,
-  awards: awards 
+  awards: awards,
 });
-
 
 //4) Realizar búsquedas
 /*

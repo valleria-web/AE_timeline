@@ -1,5 +1,14 @@
 class Event {
-  constructor(slug, title, year, date, city, country, description) {
+  constructor(
+    slug,
+    title,
+    year,
+    date,
+    city,
+    country,
+    description,
+    content = ""
+  ) {
     this.slug = slug;
     this.title = title;
     this.year = year;
@@ -8,6 +17,7 @@ class Event {
     this.country = country;
     this.description = description;
     this.participants = [];
+    this.content = content;
   }
 
   addParticipant(participant) {
@@ -26,13 +36,17 @@ class Event {
       date: this.date,
       city: this.city,
       country: this.country,
+      description: this.description,
+      content: this.content,
       participants: this.participants.map((p) => ({
         slug: p.slug,
         name: p.name,
-        awards: p.awards.map((a) => ({
-          name: a.name,
-        }))
-      }))
+        awards: Array.isArray(p.awards)
+          ? p.awards.map((a) => ({
+              name: a.name,
+            }))
+          : [],
+      })),
     };
   }
 }

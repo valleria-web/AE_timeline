@@ -7,11 +7,16 @@ function normalize(str) {
 }
 
 class AwardSearcher extends BaseSearcher {
-  search(query) {
-    const q = normalize(String(query));
+  search(query, typeFilter = null) {
+    const q = normalize(String(query || ""));
+
     return this.items.filter(award => {
       if (!award) return false;
-      // Buscar coincidencias en todos los atributos importantes, incluyendo los ganadores
+
+      if (typeFilter && award.type !== typeFilter) {
+        return false;
+      }
+
       const winnersNames = Array.isArray(award.winners)
         ? award.winners.map(w => normalize(String(w.name ?? ''))).join(' ')
         : '';
@@ -30,11 +35,10 @@ class AwardSearcher extends BaseSearcher {
         winnersSlugs
       ];
       const combined = fields.map(f => normalize(String(f ?? ''))).join(' ');
-      return combined.includes(q);
+
+      return !q || combined.includes(q);
     });
   }
 }
 
 export default AwardSearcher;
-
-

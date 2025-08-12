@@ -15,7 +15,8 @@ class AwardParser {
       data.date,
       data.city,
       data.country,
-      data.description
+      data.description,
+      data.type || data.category || ""
     );
     award.winners = [];
     return award;

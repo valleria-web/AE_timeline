@@ -6,8 +6,8 @@ class EventParser {
   static parseFromMD(filePath) {
     if (!fs.existsSync(filePath)) return null;
     const raw = fs.readFileSync(filePath, "utf8");
-    const { data } = matter(raw);
-    
+    const { data, content } = matter(raw);
+
     return new Event(
       data.slug,
       data.title,
@@ -15,7 +15,8 @@ class EventParser {
       data.date,
       data.city,
       data.country,
-      data.description
+      data.description,
+      content
     );
   }
 }
